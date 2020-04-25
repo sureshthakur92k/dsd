@@ -1,0 +1,63 @@
+﻿@model dsd.Models.FileUpload1
+
+@{
+    ViewBag.Title = "fileupload";
+}
+
+<h2>fileupload</h2>
+<script src="~/Scripts/bootstrap.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+@*@using (Html.BeginForm("fileupload", "file", FormMethod.Post,new { enctype="multipart/form-data"}))
+{*@
+     <div>
+         @Html.TextBox("file","", new { type="File"})
+         <input type="submit" value="Upload1" />
+     </div>
+@*}*@
+
+<fieldset>
+    <legend style="font-family:Arial Black;color:blue">Upload Here</legend>
+    <form action="" method="post" enctype="multipart/form-data">
+        @if (ViewBag.ResultErrorMessage != null)
+        {
+            <script type="text/javascript">
+
+    window.onload = function () {
+        alert("@ViewBag.ResultErrorMessage");
+       };
+            </script>
+        }
+    </form>
+</fieldset>
+
+<footer>
+    <p style="background-color: Yellow; color: Blue; text-align: center; font-style: oblique">© @DateTime.Now.ToLocalTime()</p> @*Add Date Time*@
+</footer> 
+
+<script>
+    $(document).ready(function () {
+        $(function () {
+            $.ajax({
+                type: "POST",
+                url: "/Task/GetEmployeeList",
+                data: '{}',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    ddlCustomers.empty().append('<option selected="selected" value="0">Please select</option>');
+                    $.each(response, function () {
+                        ddlCustomers.append($("<option></option>").val(this['Value']).html(this['Text']));
+                    });
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        });
+    });
+</script>

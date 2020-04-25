@@ -1,0 +1,40 @@
+﻿@model SK2.Models.Empa
+
+@{
+    ViewBag.Title = "Dashboard";
+}
+
+<h2>Dashboard</h2>
+
+
+<body>
+    @using (Html.BeginForm("Dashboard", "Home", FormMethod.Post))
+    {
+        @Html.DropDownListFor(m => m.EmpId, Model.EmpName, "Please select", new { onchange = "document.forms[0].submit();" })
+        <br />
+        <br />
+
+       
+        <input type="submit" value="Submit" />
+    }
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            if ($("#SubDepartmentId option").length > 1) {
+                $("#SubDepartmentId").removeAttr("disabled");
+            }
+
+            //if ($("#CityId option").length > 1) {
+            //    $("#CityId").removeAttr("disabled");
+            //}
+
+            if ($("#DepartmentId").val() != "" && $("#SubDepartmentId").val() != "") {
+                var message = "Country: " + $("#DepartmentId option:selected").text();
+                message += "\nState: " + $("#SubDepartmentId option:selected").text();
+                //message += "\nCity: " + $("#CityId option:selected").text();
+                alert(message);
+            }
+        });
+    </script>
+</body>
+

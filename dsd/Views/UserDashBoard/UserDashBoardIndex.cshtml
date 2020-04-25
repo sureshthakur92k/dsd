@@ -1,0 +1,84 @@
+﻿@model dsd.Models.UserAssignedTask
+
+
+<script src="~/Scripts/bootstrap.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<div>
+    <h4>UserAssignedTask</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TaskId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TaskId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TaskName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TaskName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TaskDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TaskDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Comment)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Comment)
+        </dd>
+
+    </dl>
+</div>
+<button id="btnDownloadFile">Download File</button>
+
+
+
+
+    <script>
+        $(document).ready(function () {
+            /////.......................For Download file
+            $('#btnDownloadFile').click(function () {
+                // var url=@Url.Content("~/api/Default/GetFile");
+                var selectedValue11 = @ViewBag.FileId;
+                //alert("download"+selectedValue11);
+                @*$.ajax({
+                    type: "GET",
+
+                    url: '@Url.Content("~/api/Default/GetFile")',
+                    //data: '{fileId: "' + selectedValue11 + '" }',
+                    data: { fileId: 3 },
+                    // contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+
+                });*@
+
+                var rul = "http://emonitoring.somee.com/api/Default/GetFile?fileId=" + selectedValue11;
+
+                //var rul = "http://localhost:60610//api/Default/GetFile?fileId=" + selectedValue11;
+                window.open(rul);
+
+
+            });
+        });
+</script>

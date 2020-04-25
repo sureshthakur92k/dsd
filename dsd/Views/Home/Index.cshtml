@@ -1,0 +1,53 @@
+﻿@model dsd.Models.DM_DashboardModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    @using (Html.BeginForm("Index", "Home", FormMethod.Post))
+    {
+        @Html.DropDownListFor(m => m.DistrictId, Model.District, "Please select", new { onchange = "document.forms[0].submit();" })
+        <br />
+        <br />
+
+        @Html.DropDownListFor(m => m.SubDivisionID, Model.SubDivision, "Please select", new { onchange = "document.forms[0].submit();", disabled = "disabled" })
+        <br />
+        <br />
+
+        @*@Html.DropDownListFor(m => m.CityId, Model.Cities, "Please select", new { disabled = "disabled" })*@
+        <br />
+        <br />
+        <input type="submit" value="Submit" />
+    }
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            if ($("#SubDivisionID option").length > 1) {
+                $("#SubDivisionID").removeAttr("disabled");
+            }
+
+            //if ($("#CityId option").length > 1) {
+            //    $("#CityId").removeAttr("disabled");
+            //}
+
+            if ($("#DistrictId").val() != "" && $("#SubDivisionID").val() != "") {
+                var message = "District: " + $("#DistrictId option:selected").text();
+                message += "\nSubDivistion: " + $("#SubDivisionID option:selected").text();
+                //message += "\nCity: " + $("#CityId option:selected").text();
+                alert(message);
+            }
+        });
+    </script>
+</body>
+</html>
+

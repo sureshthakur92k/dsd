@@ -1,0 +1,568 @@
+﻿@model dsd.Models.TaskModels
+
+@{
+    ViewBag.Title = "TaskCreation";
+}
+
+<h2>@ViewBag.Title.</h2>
+
+<script src="~/Scripts/bootstrap.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Task Creation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+               @using (Html.BeginForm("TaskCreation", "Task", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+               {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary("", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(m => m.TaskName, new { @class = "col-md-4 control-label" })
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(m => m.TaskName, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.TaskDescription, new { @class = "col-md-4 control-label" })
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(m => m.TaskDescription, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.TaskStartDate, new { @class = "col-md-4 control-label" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(m => m.TaskStartDate, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.TaskEndDate, new { @class = "col-md-4 control-label" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(m => m.TaskEndDate, new { @class = "form-control" })
+                    </div>
+                    <div class="col-md-8">
+                        @Html.LabelFor(m => m.FileId)
+                        @Html.TextBoxFor(m => m.FileId, new { @class = "form-control" })
+                        @*@Html.LabelFor(m => m.FileId, htmlAttributes: new { id = "FileUploadId" })*@
+                    </div>
+
+                </div>
+               @*<div class="form-group">
+                   <div class="row">
+                       <div class="col-md-2"></div>
+                       <div class="col-md-3">
+                           <input type="file" id="FileUpload1" />
+                       </div>
+                       <div class="col-md-2"></div>
+                       <div class="col-md-4">
+                           <input type="button" id="btnUpload" value="Upload Files" /> 
+                       </div>
+                   </div>
+                   
+                    
+               </div>*@
+
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong" id="btnFileUploadModal">
+                    <svg class="bi bi-upload" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="color:blue">
+                        <path fill-rule="evenodd" d="M.5 8a.5.5 0 01.5.5V12a1 1 0 001 1h12a1 1 0 001-1V8.5a.5.5 0 011 0V12a2 2 0 01-2 2H2a2 2 0 01-2-2V8.5A.5.5 0 01.5 8zM5 4.854a.5.5 0 00.707 0L8 2.56l2.293 2.293A.5.5 0 1011 4.146L8.354 1.5a.5.5 0 00-.708 0L5 4.146a.5.5 0 000 .708z" clip-rule="evenodd" />
+                        <path fill-rule="evenodd" d="M8 2a.5.5 0 01.5.5v8a.5.5 0 01-1 0v-8A.5.5 0 018 2z" clip-rule="evenodd" />
+                    </svg>
+                   File Upload
+                </button>
+
+                <br />
+               
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" class="btn btn-primary" value="Create" />
+                    </div>
+                </div>
+               }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>               
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@*..............................Task Assignment........................*@
+
+
+
+
+
+<div class="modal fade" id="TaskAssignemtModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Task Assignment</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+               <div class="row">
+                   <div class="col-md-4">
+                       <label>Task List</label>
+                   </div>
+                   <div class="col-md-8">
+                       <select id="ddlTaskList">
+                           <option value="Select">Select</option>
+                       </select>
+                   </div>
+               </div>
+                <div class="row">
+                    <div class="col-md-4">Task Name</div>
+                    <div class="col-md-8">
+                        <label id="taskname"></label> 
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">Task Description</div>
+                    <div class="col-md-8">
+                        <label id="taskDescription"></label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">Comment</div>
+                    <div class="col-md-8">
+                        <textarea rows="4" cols="50"></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <input type="checkbox" id="checkAssign" name="checkAssign" value="">
+                        <label for="checkAssign"> Assign TO</label><br>
+                    </div>
+                    <div class="col-md-4">
+                        <select id="ddlEmployeeList">
+                            <option value="Select">Select</option>
+                        </select>
+                    </div>
+                    <br />
+                    <br />
+                    <div class="col-md-4">
+                        <button id="btnSendMail" class="btn btn-primary">Send Mail</button>
+                    </div>
+                    <div>
+                        <br />
+                        <br />
+                        <div class="col-md-4">
+                            <button id="btnAssigneTaskToUser" class="btn btn-primary">Assigne Task</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*/////.................................For file UPLOAD*@
+
+
+<div class="modal fade" id="ModalFileUpload" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">File Upload..</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <div>
+                        @Html.TextBox("file", "", new { type = "File",id= "FileUpload1" })
+                        <input type="submit" value="Upload1" id="btnUploadFile" />
+                    </div>
+                </div>
+                <fieldset>
+                    <legend style="font-family:Arial Black;color:blue">Upload Here</legend>
+                    <form action="" method="post" enctype="multipart/form-data">
+                        @if (ViewBag.ResultErrorMessage != null)
+                        {
+                            <script type="text/javascript">
+
+                                 window.onload = function () {
+                            alert("@ViewBag.ResultErrorMessage");
+                        };
+                            </script>
+                        }
+                    </form>
+                </fieldset>
+
+               
+
+
+                @*<form action="" method="post" enctype="multipart/form-data">
+                    <input type="file" name="postedFile" />
+                    <input type="button" id="btnUploadFile" value="Upload" />
+                </form>*@
+            </div>    
+        </div>
+    </div>
+</div>
+
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong" id="btnModal">
+    Create Task
+</button>
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong" id="btnTaksAssignment">
+    Task Assignment
+</button>
+
+@*<div>
+    <button type="button" class="btn btn-secondary" id="btnDownloadFile">Download File</button>
+</div>*@
+
+
+
+
+
+
+
+
+
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+
+<script>
+    $(document).ready(function () {
+        var selectedValueUser;
+        var selectedEmployeeEmail;
+        var tasknamformail;
+        var taskDescriptionformail;
+        var selectedTaskIdValue;
+        $('#btnModal').click(function () {
+            $('#exampleModal').modal('show');
+            ////alert("HIIII");
+        });
+        $('#btnTaksAssignment').click(function () {
+            $('#TaskAssignemtModal').modal('show');
+
+            //$('#ddlTaskId').change(function () {
+            //    var selectedValue = parseInt(jQuery(this).val());
+            //    alert("dd id is" + selectedValue);
+
+            //$.ajax({
+            //    type: 'POST',
+            //    contentType: "application/json; charset=utf-8",
+            //    url: 'Task/GetTastDetails',
+
+            //   // async: false,
+            //    dataType: 'json',
+            //  //  processData: false,
+            //    data:"5",
+            //    success: function (data) { }
+            //});
+
+            $(function () {
+                var ddlCustomers = $("#ddlTaskList");
+                ddlCustomers.empty().append('<option selected="selected" value="0" disabled = "disabled">Loading.....</option>');
+                $.ajax({
+                    type: "POST",
+                    url: "/Task/GetTaskList",
+                    data: '{}',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        ddlCustomers.empty().append('<option selected="selected" value="0">Please select</option>');
+                        $.each(response, function () {
+                            ddlCustomers.append($("<option></option>").val(this['Value']).html(this['Text']));
+                        });
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            });
+
+            ///.......................To Get Employee List.............
+
+            $(function () {
+                var ddlCustomers = $("#ddlEmployeeList");
+                ddlCustomers.empty().append('<option selected="selected" value="0" disabled = "disabled">Loading.....</option>');
+                $.ajax({
+                    type: "POST",
+                    url: "/Task/GetEmployeeList",
+                    data: '{}',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        ddlCustomers.empty().append('<option selected="selected" value="0">Please select</option>');
+                        $.each(response, function () {
+                            ddlCustomers.append($("<option></option>").val(this['Value']).html(this['Text']));
+                        });
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            });
+
+
+
+        });
+
+        $('#ddlTaskList').change(function () {
+            selectedTaskIdValue = parseInt(jQuery(this).val());
+           // alert("dd" + selectedValue);
+        $.ajax({
+            type: "POST",
+            url: "/Task/GetTastDetails",
+            data: '{id: "' + selectedTaskIdValue + '" }',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+
+                $('#taskname').text(response.TaskName);
+                $('#taskDescription').text(response.TaskDescription);
+                $('#startDate').text(response.TaskStartDate);
+                $('#enddate').text(response.TaskEndDate);
+               // alert(response.TaskName)
+                //alert("Hello: " + response.Name + " .\nCurrent Date and Time: " + response.DateTime);
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+        });
+
+
+        //..........................................On Click of employee
+
+
+        $('#ddlEmployeeList').change(function () {
+            selectedValueUser = jQuery(this).val();
+            //selectedValueUser = this.val();
+           // alert("bbb"+selectedValueUser);
+            selectedEmployeeEmail = $(this).find("option:selected").text();
+        });
+
+
+        ////////////////////////////////////////.FOR FILE UPLOAD
+
+        //$('#btnUpload').click(function () {
+
+        //    // Checking whether FormData is available in browser
+        //    if (window.FormData !== undefined) {
+
+        //        var fileUpload = $("#FileUpload1").get(0);
+        //        var files = fileUpload.files;
+
+        //        // Create FormData object
+        //        var fileData = new FormData();
+
+        //        // Looping over all files and add it to FormData object
+        //        for (var i = 0; i < files.length; i++) {
+        //            fileData.append(files[i].name, files[i]);
+        //        }
+
+        //        // Adding one more key to FormData object
+        //        fileData.append('username', 'Manas');
+
+        //        $.ajax({
+        //            url: '/File/fileupload',
+        //            type: "POST",
+        //            contentType: false, // Not to set any content header
+        //            processData: false, // Not to process data
+        //            data: fileData,
+        //            success: function (result) {
+        //                alert(result);
+        //            },
+        //            error: function (err) {
+        //                alert(err.statusText);
+        //            }
+        //        });
+        //    } else {
+        //        alert("FormData is not supported.");
+        //    }
+        //});
+
+        $('#btnFileUploadModal').click(function () {
+            $('#ModalFileUpload').modal('show');
+            ////alert("HIIII");
+            $("#btnUploadFile").click(function () {
+               // alert("ddd");
+                // Checking whether FormData is available in browser
+                if (window.FormData !== undefined) {
+
+                    var fileUpload = $("#FileUpload1").get(0);
+                    var files = fileUpload.files;
+
+                    // Create FormData object
+                    var fileData = new FormData();
+
+                    // Looping over all files and add it to FormData object
+                    for (var i = 0; i < files.length; i++) {
+                        fileData.append(files[i].name, files[i]);
+                    }
+
+                    // Adding one more key to FormData object
+                    fileData.append('username', 'Manas')
+
+
+                    $.ajax({
+                        url: '@Url.Content("~/api/Default/SaveFile")',
+                        type: 'POST',
+                        data: fileData,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        success: function (response) {
+                            //$("#fileProgress").hide();
+                            $("#FileId").val(response.id)
+                            alert("file uploaded succ" + response.id);
+                            //AppendRow(response.id, response.Name);
+                        },
+                        xhr: function () {
+                            var fileXhr = $.ajaxSettings.xhr();
+                            if (fileXhr.upload) {
+                                $("progress").show();
+                                fileXhr.upload.addEventListener("progress", function (e) {
+                                    if (e.lengthComputable) {
+                                        $("#fileProgress").attr({
+                                            value: e.loaded,
+                                            max: e.total
+                                        });
+                                    }
+                                }, false);
+                            }
+                            return fileXhr;
+                        }
+                    });
+                };
+            })
+        });
+
+        /////.......................For Download file
+        $('#btnDownloadFile').click(function () {
+            // var url=@Url.Content("~/api/Default/GetFile");
+            var selectedValue11 = 2;
+            //alert("download");
+            $.ajax({
+                type: "GET",
+
+                url: '@Url.Content("~/api/Default/GetFile")',
+                //data: '{fileId: "' + selectedValue11 + '" }',
+                data: { fileId: 3 },
+                // contentType: "application/json; charset=utf-8",
+                dataType: "json",
+
+            });
+            
+            var rul = "http://emonitoring.somee.com/api/Default/GetFile?fileId=" + 3;
+            window.open(rul);
+            
+
+        });
+        ///.............................For mail send............
+
+        $('#btnSendMail').click(function () {
+
+            tasknamformail = $("#taskname").text();
+            taskDescriptionformail = $("#taskDescription").text();
+            //alert("taksname=" + tasknamformail);
+            var model = {
+                From: "suresh.thakur92k@gmail.com",
+                To: selectedEmployeeEmail,
+                Subject: "Test mail",
+                Body: "Hi Mr,Plese find the Task Details for you Assigne         " + "        Task Name=        " +          tasknamformail          + "Task Description=        " +          taskDescriptionformail          + "          For More Details Please go this link          "                + "          http://emonitoring.somee.com/    "
+            };
+           // alert("emsil=" + selectedEmployeeEmail);
+            $.ajax({
+                type: "POST",
+                url: "/SendMailer/Index1",
+                data: JSON.stringify(model),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    alert("sent");
+                  //  alert("Mail Sent");
+                    //$('#taskname').text(response.TaskName);
+                    //$('#taskDescription').text(response.TaskDescription);
+                    //$('#startDate').text(response.TaskStartDate);
+                    //$('#enddate').text(response.TaskEndDate);
+                    //// alert(response.TaskName)
+                    //alert("Hello: " + response.Name + " .\nCurrent Date and Time: " + response.DateTime);
+                },
+                //failure: function (response) {
+                //    alert(response);
+                //},
+                //error: function (response) {
+                //    alert(response);
+                //}
+            });
+        });
+
+        //.........................Assigne taks to user...............
+        $('#btnAssigneTaskToUser').click(function () {
+
+            tasknamformail = $("#taskname").text();
+            taskDescriptionformail = $("#taskDescription").text();
+
+            alert(selectedValueUser);
+            //alert("userid" + selectedValueUser + "usernam" + selectedEmployeeEmail + "task name=" + tasknamformail + "taskDescriptionformail" + taskDescriptionformail + "selectedTaskIdValue" + selectedTaskIdValue)
+            var AssignTaskData = {
+                UserName: selectedEmployeeEmail,
+                UserId: selectedValueUser,
+                TaskId: selectedTaskIdValue,
+                TaskName: tasknamformail,
+                TaskDescription: taskDescriptionformail,
+                Comment: "ssssssssssss",
+                LogedInUserGuid:selectedValueUser
+                
+            };
+            // alert("emsil=" + selectedEmployeeEmail);
+            $.ajax({
+                type: "POST",
+                url: "/Task/TaskAssignment",
+                data: JSON.stringify(AssignTaskData),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    alert("Task assign");
+                    
+                },
+                //failure: function (response) {
+               
+            });
+        });
+        
+
+        });
+
+
+</script>
