@@ -5,9 +5,7 @@ using System.Web;
 
 namespace dsd.Models
 {
-    public class TestMod
+    public class Class1
     {
-        public int Id { get; set; }
-        public string Status { get; set; }
     }
 }

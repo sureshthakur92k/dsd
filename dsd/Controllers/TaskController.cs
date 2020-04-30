@@ -71,6 +71,22 @@ namespace dsd.Controllers
             return Json(taskList);          
         }
 
+        [HttpPost]
+        public JsonResult GetTaskStatus()
+        {
+            List<SelectListItem> taskStatus = new List<SelectListItem>();
+            int rowCount = _db.TaskStatusModal.Count();
+            for (int i = 0; i < rowCount; i++)
+            {
+                taskStatus.Add(new SelectListItem
+                {
+                    Value = _db.TaskStatusModal.ToList()[i].Id.ToString(),
+                    Text = _db.TaskStatusModal.ToList()[i].Status
+                });
+            }
+            return Json(taskStatus);
+        }
+
 
         [HttpPost]
         public JsonResult GetEmployeeList()

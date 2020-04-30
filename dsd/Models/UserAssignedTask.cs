@@ -16,6 +16,13 @@ namespace dsd.Models
         public string TaskName { get; set; }
         public string TaskDescription { get; set; }
         public string Comment { get; set; }
+       /// public int FileId { get; set; }
+        private int filId; // field
+        public int FileID   // property
+        {
+            get { return filId; }
+            set { filId = value; }
+        }
         public Guid LogedInUserGuid { get; set; }
 
 

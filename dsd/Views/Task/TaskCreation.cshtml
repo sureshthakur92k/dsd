@@ -139,7 +139,7 @@
                 <div class="row">
                     <div class="col-md-4">Comment</div>
                     <div class="col-md-8">
-                        <textarea rows="4" cols="50"></textarea>
+                        <textarea rows="4" cols="50" id="txtComment"></textarea>
                     </div>
                 </div>
                 <div class="row">
@@ -255,6 +255,7 @@
         var selectedEmployeeEmail;
         var tasknamformail;
         var taskDescriptionformail;
+        var CommentTxt;
         var selectedTaskIdValue;
         $('#btnModal').click(function () {
             $('#exampleModal').modal('show');
@@ -530,10 +531,12 @@
         //.........................Assigne taks to user...............
         $('#btnAssigneTaskToUser').click(function () {
 
+          
             tasknamformail = $("#taskname").text();
             taskDescriptionformail = $("#taskDescription").text();
-
-            alert(selectedValueUser);
+            CommentTxt = $("#txtComment").val();
+            alert("comment is" + CommentTxt);
+           // alert(selectedValueUser);
             //alert("userid" + selectedValueUser + "usernam" + selectedEmployeeEmail + "task name=" + tasknamformail + "taskDescriptionformail" + taskDescriptionformail + "selectedTaskIdValue" + selectedTaskIdValue)
             var AssignTaskData = {
                 UserName: selectedEmployeeEmail,
@@ -541,7 +544,7 @@
                 TaskId: selectedTaskIdValue,
                 TaskName: tasknamformail,
                 TaskDescription: taskDescriptionformail,
-                Comment: "ssssssssssss",
+                Comment: CommentTxt,
                 LogedInUserGuid:selectedValueUser
                 
             };

@@ -1,0 +1,205 @@
+﻿
+@{
+    ViewBag.Title = "UserIndex";
+}
+
+<script src="~/Scripts/bootstrap.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<h2>UserIndex</h2>
+
+<div class="modal fade" id="ModalUploadTaskStatus" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Upload Task Status</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Task Status :</label>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="col-md-8">
+                                <select id="ddlTaskStatus">
+                                    <option value="Select">Select</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Upload File:</label>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="col-md-8">
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong" id="btnFileUploadModal">
+                                    <svg class="bi bi-upload" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="color:blue">
+                                        <path fill-rule="evenodd" d="M.5 8a.5.5 0 01.5.5V12a1 1 0 001 1h12a1 1 0 001-1V8.5a.5.5 0 011 0V12a2 2 0 01-2 2H2a2 2 0 01-2-2V8.5A.5.5 0 01.5 8zM5 4.854a.5.5 0 00.707 0L8 2.56l2.293 2.293A.5.5 0 1011 4.146L8.354 1.5a.5.5 0 00-.708 0L5 4.146a.5.5 0 000 .708z" clip-rule="evenodd" />
+                                        <path fill-rule="evenodd" d="M8 2a.5.5 0 01.5.5v8a.5.5 0 01-1 0v-8A.5.5 0 018 2z" clip-rule="evenodd" />
+                                    </svg>
+                                    File Upload
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div>
+                            <button>Submit</button>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<button id="btnUserDeshboard1">My Taks</button>
+<hr />
+
+<script>
+
+    $(document).ready(function () {
+
+        $('#btnUserDeshboard1').click(function () {
+            //alert("dsfs");
+            //Call EmpDetails jsonResult Method
+           // $.getJSON("Home/EmpDetails",
+
+
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Content("~/UserDashBoard/UserDashBoardIndex1")',
+                datatype: JSON,
+                data: {
+                    'categoryId': $("#btnUserDeshboard1").val()
+                },
+                success: function (data) {
+                   // alert(data.TaskName);
+                    $('#blogTable tbody').empty();
+                    $.each(data, function(i, item) {
+                        //var rows = "<tr>" + "<td>" + item.TaskId + "</td>" + "<td>" + item.TaskName + "</td>" + "<td>" + item.TaskDescription + "</td>" + "<td>" + item.Comment + "</td>" + "<td>" + item.FileID + "</td>" + "</tr>";
+
+                        //var rows = "<tr>" + "<td>" + item.TaskId + "</td>" + "<td>" + item.TaskName + "</td>" + "<td>" + item.TaskDescription + "</td>" + "<td>" + item.Comment + "</td>" + "<td>" + "<button  onclick='myFunction(this.value)' class='clsActionButton' id='idAddButton' value=" + item.FileID +";'>Download</button>"+ "</td>" + "</tr>";
+
+                        var rows = "<tr>" + "<td>" + item.TaskId + "</td>" + "<td>" + item.TaskName + "</td>" + "<td>" + item.TaskDescription + "</td>" + "<td>" + item.Comment + "</td>" + "<td>" + "<button  onclick='myFunction(this.value)' class='clsActionButton' id='idAddButton' value=" + item.FileID + ";'>Download</button>" + "</td>" + "<td>" + "<button  onclick='functionUploadTastStatus(this.value)' class='clsUploadTaskStatus' id='btnUploadTaskStatus';'>UploadTastStatus</button>" + "</td>"  +"</tr>";
+                        $('#blogTable tbody').append(rows);
+                    });
+                },
+                error: function(data) {}
+            });
+
+
+
+
+
+            //$.getJSON("UserDashBoard/UserDashBoardIndex1",
+            //    function (json) {
+            //        var tr;
+            //        //Append each row to html table
+            //        for (var i = 0; i < json.length; i++) {
+            //            tr = $('<tr/>');
+            //            tr.append("<td>" + json[i].TaskId + "</td>");
+            //            tr.append("<td>" + json[i].TaskName + "</td>");
+            //            tr.append("<td>" + json[i].TaskDescription + "</td>");
+            //            tr.append("<td>" + json[i].Comment + "</td>");
+            //            $('table').append(tr);
+            //        }
+            //    });
+        });
+
+
+        //$("#idAddButton").click(function () {
+        //    alert("dddd"+this.val);
+        //});
+        $('#idAddButton').click(function () {
+            alert($(this).val());
+        });
+
+    });
+    function myFunction(fileIdvalue) {
+        var val = fileIdvalue[0];
+        if (val != 0) {
+            //...............for server
+            var rul = "http://emonitoring.somee.com/api/Default/GetFile?fileId=" + val;
+            //...............for Local
+           // var rul = "http://localhost:60610//api/Default/GetFile?fileId=" + val;
+            window.open(rul);
+        }
+        else {
+            alert("File is not Found for this Task");
+        }
+        //document.getElementById("demo").innerHTML = "Hello World";
+    }
+
+    function functionUploadTastStatus() {
+        $('#ModalUploadTaskStatus').modal('show');
+
+
+        $(function () {
+            var ddlCustomers = $("#ddlTaskStatus");
+            ddlCustomers.empty().append('<option selected="selected" value="0" disabled = "disabled">Loading.....</option>');
+            $.ajax({
+                type: "POST",
+                url: "/Task/GetTaskStatus",
+                data: '{}',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    ddlCustomers.empty().append('<option selected="selected" value="0">Please select</option>');
+                    $.each(response, function () {
+                        ddlCustomers.append($("<option></option>").val(this['Value']).html(this['Text']));
+                    });
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        });
+
+       // alert("dkdk");
+    }
+
+
+</script>
+@*<table class="table table-bordered table-condensed table-hover table-striped">
+        <thead>
+            <tr>
+                <th>Task Id</th>
+                <th>Task Name</th>
+                <th>Task Description</th>
+                <th>Comment</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>*@
+
+
+<table id="blogTable" class="table table-bordered table-condensed table-hover table-striped">
+    <thead>
+        <tr style="background-color: DarkGreen; color: white;">
+            <th>Id</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Comment</th>
+            <th>Download File</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+

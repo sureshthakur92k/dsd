@@ -8,6 +8,12 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
+
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -29,8 +35,9 @@
                     }
                     @if (User.IsInRole("SubDivision"))
                     {
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("MyDashboard", "UserDashBoardIndex", "UserDashBoard")</li>
+                        <li>@Html.ActionLink("About", "About", "Home")</li>
+                        <li>@Html.ActionLink("MyDashboard", "UserIndex", "UserDashBoard")</li>
+                        @*<li><button id="btnUserDeshboard1">UserDashboard1</button></li>*@
                     }
                 </ul>
                 @Html.Partial("_LoginPartial")
@@ -50,3 +57,29 @@
     @RenderSection("scripts", required: false)
 </body>
 </html>
+
+
+
+@*<script>
+        $(document).ready(function () {
+            /////.......................For Download file
+            $('#btnUserDeshboard1').click(function () {
+               
+                alert("ddddd");
+                $.ajax({
+                    type: "GET",
+
+                    url: '@Url.Content("~/UserDashBoard/UserDashBoardIndex1")',
+                    //data: '{fileId: "' + selectedValue11 + '" }',
+                   // data: { fileId: 3 },
+                    // contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+
+                });
+
+               
+
+
+            });
+        });
+</script>*@
